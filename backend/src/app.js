@@ -10,15 +10,16 @@ const app = express();
 
 app.use(helmet());
 
-// UPDATE THIS LINE:
+// Your exact Vercel URL goes here
 app.use(cors({ 
   origin: ['https://gym-dashboard-self-tau.vercel.app', 'http://localhost:3000'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
 
 app.use(express.json());
 
+// The health route
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
