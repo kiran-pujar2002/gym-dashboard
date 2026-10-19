@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Owner {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+}
+
+model Package {
+  id           Int      @id @default(autoincrement())
+  name         String
+  duration     Int      // in months
+  monthlyPrice Float
+  admissionFee Float
+  cardioFee    Float
+  createdAt    DateTime @default(now())
+  members      Member[]
+}
+
+model Member {
+  id             Int       @id @default(autoincrement())
+  name           String
+  email          String    @unique
+  phone          String?
+  hasCardio      Boolean   @default(false)
+  admissionPaid  Boolean   @default(true)
+  totalPaid      Float     @default(0)
+  nextDueDate    DateTime
+  isPaid         Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  
+  packageId      Int
+  package        Package   @relation(fields: [packageId], references: [id])
+  
+  payments       Payment[] // <-- Added relation
+}
+
+// NEW MODEL
+model Payment {
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  date      DateTime @default(now())
+  notes     String?
+  
+  memberId  Int
+  member    Member   @relation(fields: [memberId], references: [id])
+}
