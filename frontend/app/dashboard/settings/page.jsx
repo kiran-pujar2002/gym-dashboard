@@ -108,7 +108,7 @@ export default function SettingsPage() {
             </div>
           </div>
         ))}
-        {packages.length === 0 && <p className="text-slate-500 dark:text-gray-400 col-span-full font-medium">No packages created yet. Click "Create Package" to start.</p>}
+        {packages.length === 0 && <p className="text-slate-500 dark:text-gray-400 col-span-full font-medium">No packages created yet. Click &quot;Create Package&quot; to start.</p>}
       </div>
 
       {/* DRAWER */}
