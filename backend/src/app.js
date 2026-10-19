@@ -3,23 +3,29 @@ const cors = require('cors');
 const helmet = require('helmet');
 const memberRoutes = require('./routes/members');
 const authRoutes = require('./routes/auth');
-const packageRoutes = require('./routes/packages'); // <-- NEW
+const packageRoutes = require('./routes/packages');
 const billingRoutes = require('./routes/billing');
 
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+
+// UPDATE THIS LINE:
+app.use(cors({ 
+  origin: ['https://gym-dashboard-self-tau.vercel.app', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 app.use(express.json());
-app.use(cors({ origin: '*' }));
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.status(200).send('OK');
 });
 
 app.use('/api/auth', authRoutes);
 app.use('/api/members', memberRoutes);
-app.use('/api/packages', packageRoutes); // <-- NEW
+app.use('/api/packages', packageRoutes);
 app.use('/api/billing', billingRoutes);
 
 module.exports = app;
